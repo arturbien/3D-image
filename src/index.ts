@@ -2,7 +2,7 @@ import { isString, isElement } from "./type_checking";
 import vertexShader from "./shaders/vertex";
 import fragmentShader from "./shaders/fragment";
 import { Selector } from "./types";
-
+alert("test");
 class Image3d {
   process(selector: Selector): void {
     let target: HTMLElement;
