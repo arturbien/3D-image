@@ -2,8 +2,11 @@ import { isString, isElement } from "./type_checking";
 import vertexShader from "./shaders/vertex";
 import fragmentShader from "./shaders/fragment";
 import { Selector } from "./types";
-class Image3d {
-  process(selector: Selector): void {
+
+class Something {
+  processedImages: Array<Image3D>;
+
+  apply(selector: Selector): void {
     let target: HTMLElement;
 
     if (isString(selector)) {
@@ -11,26 +14,44 @@ class Image3d {
     } else if (isElement(selector)) {
       target = selector;
     }
-
     if (!target) return;
-    console.log(target);
 
-    this.createCanvas(target);
+    // getting images source
+    const src: string = target.getAttribute(`data-src`);
+    const depthSrc: string = target.getAttribute(`data-depth-src`);
+    const image3D = new Image3D(target, src, depthSrc);
   }
-  async createImage(src: string): Promise<HTMLImageElement> {
+}
+
+class Image3D {
+  target: HTMLElement;
+  src: string;
+  depthSrc: string;
+  canvas: HTMLCanvasElement;
+  gl: WebGLRenderingContext;
+
+  constructor(target: HTMLElement, src: string, depthSrc: string) {
+    this.target = target;
+    this.src = src;
+    this.depthSrc = depthSrc;
+    this.setup();
+  }
+  async setup() {
+    this.canvas = await this.createCanvas(this.target);
+    this.target.appendChild(this.canvas);
+  }
+
+  async loadImage(src: string): Promise<HTMLImageElement> {
     const img: HTMLImageElement = new Image();
     img.src = src;
     await new Promise(r => (img.onload = r));
     return img;
   }
   async createCanvas(target: HTMLElement): Promise<HTMLCanvasElement> {
-    // getting images source
-    const src: string = target.getAttribute(`data-src`);
-    const depthSrc: string = target.getAttribute(`data-depth-src`);
-
-    // creating Image elements
-    const img: HTMLImageElement = await this.createImage(src);
-    const depthImg: HTMLImageElement = await this.createImage(depthSrc);
+    console.log(this);
+    // loading imagesImage elements
+    const img: HTMLImageElement = await this.loadImage(this.src);
+    const depthImg: HTMLImageElement = await this.loadImage(this.depthSrc);
     // creating Canvas element with size of loaded image
     const canvas: HTMLCanvasElement = document.createElement("canvas");
     canvas.height = img.height;
@@ -43,8 +64,6 @@ class Image3d {
       maxHeight: "100vh",
       objectFit: "contain"
     });
-
-    document.body.appendChild(canvas);
 
     const buffer: WebGLBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -97,33 +116,34 @@ class Image3d {
     setTexture(img, "img", 0);
     setTexture(depthImg, "depth", 1);
 
-    loop();
-
     function loop(): void {
       gl.clearColor(0.25, 0.65, 1, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       requestAnimationFrame(() => loop());
     }
+    loop();
 
-    const mouseLoc: WebGLUniformLocation = gl.getUniformLocation(
+    const mouseLocation: WebGLUniformLocation = gl.getUniformLocation(
       program,
       "mouse"
     );
-
+    // TODO implement other callback not using 'layerX' and 'layerY' prop (non-standard feature)
     canvas.onmousemove = function(d): void {
       const mpos = [
         -0.5 + d.layerX / canvas.width,
         0.5 - d.layerY / canvas.width
       ];
-      gl.uniform2fv(mouseLoc, new Float32Array(mpos));
+      gl.uniform2fv(mouseLocation, new Float32Array(mpos));
+      // render next frame on mouse move
+      // requestAnimationFrame(() => loop());
     };
-    document.body.appendChild(canvas);
+    this.gl = gl;
     return canvas;
   }
 }
 export interface CustomWindow extends Window {
-  Image3d: any;
+  Something: any;
 }
 declare let window: CustomWindow;
-window.Image3d = new Image3d();
+window.Something = new Something();

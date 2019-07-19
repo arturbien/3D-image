@@ -13,18 +13,22 @@
       body {
         background: #333;
       }
+      .wrapper {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
-    <h1>Test</h1>
-    <div
-      class="swag"
-      data-src="./assets/avo.jpg"
-      data-depth-src="./assets/avo-depth.jpg"
-    ></div>
+    <div class="wrapper">
+      <div
+        class="swag"
+        data-src="./assets/avo.jpg"
+        data-depth-src="./assets/avo-depth.jpg"
+      ></div>
+    </div>
     <script src="./bundle.js"></script>
     <script>
-      Image3d.process(".swag");
+      Something.apply(".swag");
     </script>
   </body>
 </html>
