@@ -4,10 +4,8 @@ module.exports = {
   entry: "./src/index.ts",
   devtool: "inline-source-map",
   devServer: {
-    contentBase: [
-      path.join(__dirname, "public"),
-      path.join(__dirname, "assets")
-    ]
+    contentBase: "./public",
+    watchContentBase: true
   },
   module: {
     rules: [

@@ -8,7 +8,6 @@ class Image3d {
 
     if (isString(selector)) {
       target = document.querySelector(selector);
-      if (!target) return;
     } else if (isElement(selector)) {
       target = selector;
     }
@@ -32,7 +31,6 @@ class Image3d {
     // creating Image elements
     const img: HTMLImageElement = await this.createImage(src);
     const depthImg: HTMLImageElement = await this.createImage(depthSrc);
-
     // creating Canvas element with size of loaded image
     const canvas: HTMLCanvasElement = document.createElement("canvas");
     canvas.height = img.height;
@@ -125,7 +123,7 @@ class Image3d {
   }
 }
 export interface CustomWindow extends Window {
-  image3d: any;
+  Image3d: any;
 }
 declare let window: CustomWindow;
-window.image3d = new Image3d();
+window.Image3d = new Image3d();
