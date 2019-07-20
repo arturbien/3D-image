@@ -3,8 +3,12 @@ import vertexShader from "./shaders/vertex";
 import fragmentShader from "./shaders/fragment";
 import { Selector } from "./types";
 
+import getRelativeMousePosition from "./getRelativeMousePosition";
 class Something {
   processedImages: Array<Image3D>;
+  constructor() {
+    this.processedImages = [];
+  }
 
   apply(selector: Selector): void {
     let target: HTMLElement;
@@ -20,6 +24,7 @@ class Something {
     const src: string = target.getAttribute(`data-src`);
     const depthSrc: string = target.getAttribute(`data-depth-src`);
     const image3D = new Image3D(target, src, depthSrc);
+    this.processedImages.push(image3D);
   }
 }
 
@@ -76,12 +81,14 @@ class Image3D {
     gl.enableVertexAttribArray(0);
 
     // creating shaders
+    const vShader: string = vertexShader;
     const vs: WebGLShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vs, vertexShader);
+    gl.shaderSource(vs, vShader);
     gl.compileShader(vs);
 
+    const fShader: string = fragmentShader;
     const fs: WebGLShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fs, fragmentShader);
+    gl.shaderSource(fs, fShader);
     gl.compileShader(fs);
 
     const program: WebGLProgram = gl.createProgram();
@@ -120,7 +127,7 @@ class Image3D {
       gl.clearColor(0.25, 0.65, 1, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(() => loop());
+      // requestAnimationFrame(() => loop());
     }
     loop();
 
@@ -128,20 +135,17 @@ class Image3D {
       program,
       "mouse"
     );
-    // TODO implement other callback not using 'layerX' and 'layerY' prop (non-standard feature)
-    canvas.onmousemove = function(d): void {
-      const mpos = [
-        -0.5 + d.layerX / canvas.width,
-        0.5 - d.layerY / canvas.width
-      ];
-      gl.uniform2fv(mouseLocation, new Float32Array(mpos));
+    canvas.onmousemove = function(e): void {
+      const mousePosition = getRelativeMousePosition(e);
+      gl.uniform2fv(mouseLocation, new Float32Array(mousePosition));
       // render next frame on mouse move
-      // requestAnimationFrame(() => loop());
+      requestAnimationFrame(() => loop());
     };
     this.gl = gl;
     return canvas;
   }
 }
+
 export interface CustomWindow extends Window {
   Something: any;
 }
