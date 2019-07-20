@@ -146,7 +146,7 @@ class Image3D {
     };
     // TODO interface for alpa,beta,gamma
     const onDeviceMotion = (alpha: number, beta: number, gamma: number) => {
-      const RATIO = 0.025;
+      const RATIO = 0.015;
       const devicePosition = [-RATIO * gamma, -RATIO * beta];
       gl.uniform2fv(mouseLocation, new Float32Array(devicePosition));
       // render next frame on mouse move

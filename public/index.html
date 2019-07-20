@@ -25,10 +25,32 @@
         data-src="./assets/avo.jpg"
         data-depth-src="./assets/avo-depth.jpg"
       ></div>
+      <div
+        class="swag"
+        data-src="./assets/ball.jpg"
+        data-depth-src="./assets/ball-depth.jpg"
+      ></div>
+      <div
+        class="swag"
+        data-src="./assets/canyon.jpg"
+        data-depth-src="./assets/canyon-depth.jpg"
+      ></div>
+      <div
+        class="swag"
+        data-src="./assets/lady.jpg"
+        data-depth-src="./assets/lady-depth.jpg"
+      ></div>
+      <div
+        class="swag"
+        data-src="./assets/mount.jpg"
+        data-depth-src="./assets/mount-depth.jpg"
+      ></div>
     </div>
     <script src="./bundle.js"></script>
     <script>
-      Something.apply(".swag");
+      document.querySelectorAll(".swag").forEach(elem => {
+        Something.apply(elem);
+      });
     </script>
   </body>
 </html>
