@@ -44,7 +44,6 @@ class DeviceOrientationManager {
       e => {
         this.updateOrientationData(e);
         this.subscribers.forEach(subscriber => {
-          console.log(this);
           subscriber(this.alpha, this.beta, this.gamma);
         });
       },
@@ -55,7 +54,6 @@ class DeviceOrientationManager {
     this.subscribers.push(fn);
   }
   updateOrientationData(e: DeviceOrientationEvent): void {
-    console.log(e);
     if (!this.initialData) {
       this.initialData = {
         alpha: e.alpha,

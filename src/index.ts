@@ -2,15 +2,16 @@ import { isString, isElement } from "./type_checking";
 import vertexShader from "./shaders/vertex";
 import fragmentShader, { MOUSE_VECTOR_NAME } from "./shaders/fragment";
 import { Selector } from "./types";
-
+import observer from "./observer";
 import {
   getRelativeMousePosition,
   DeviceOrientation
 } from "./getRelativeMousePosition";
-class Something {
-  processedImages: Array<Image3D>;
+
+class ImageManager {
+  images: Array<Image3D>;
   constructor() {
-    this.processedImages = [];
+    this.images = [];
   }
 
   apply(selector: Selector): void {
@@ -27,7 +28,7 @@ class Something {
     const src: string = target.getAttribute(`data-src`);
     const depthSrc: string = target.getAttribute(`data-depth-src`);
     const image3D = new Image3D(target, src, depthSrc);
-    this.processedImages.push(image3D);
+    this.images.push(image3D);
   }
 }
 
@@ -37,16 +38,28 @@ class Image3D {
   depthSrc: string;
   canvas: HTMLCanvasElement;
   gl: WebGLRenderingContext;
+  blockRepaint: boolean;
+  pixelRatio: number;
 
   constructor(target: HTMLElement, src: string, depthSrc: string) {
     this.target = target;
     this.src = src;
     this.depthSrc = depthSrc;
+    this.blockRepaint = false;
+    //TODO high pixel ratio causes drastic performance issues WTF
+    // this.pixelRatio = window.devicePixelRatio;
+    this.pixelRatio = 1;
     this.setup();
   }
   async setup() {
     this.canvas = await this.createCanvas(this.target);
     this.target.appendChild(this.canvas);
+
+    observer.subscribe({
+      target: this.target,
+      onVisible: () => (this.blockRepaint = false),
+      onInvisible: () => (this.blockRepaint = true)
+    });
   }
 
   async loadImage(src: string): Promise<HTMLImageElement> {
@@ -56,21 +69,22 @@ class Image3D {
     return img;
   }
   async createCanvas(target: HTMLElement): Promise<HTMLCanvasElement> {
-    console.log(this);
     // loading imagesImage elements
     const img: HTMLImageElement = await this.loadImage(this.src);
     const depthImg: HTMLImageElement = await this.loadImage(this.depthSrc);
     // creating Canvas element with size of loaded image
     const canvas: HTMLCanvasElement = document.createElement("canvas");
-    canvas.height = img.height;
-    canvas.width = img.width;
+    canvas.height = img.height * this.pixelRatio;
+    canvas.width = img.width * this.pixelRatio;
 
     const gl: WebGLRenderingContext = canvas.getContext("webgl");
 
     Object.assign(canvas.style, {
       maxWidth: "100vw",
       maxHeight: "100vh",
-      objectFit: "contain"
+      objectFit: "contain",
+      width: "100%",
+      height: "100%"
     });
 
     const buffer: WebGLBuffer = gl.createBuffer();
@@ -126,21 +140,22 @@ class Image3D {
     setTexture(img, "img", 0);
     setTexture(depthImg, "depth", 1);
 
-    function loop(): void {
+    const loop = (): void => {
+      if (this.blockRepaint) return;
       gl.clearColor(0.25, 0.65, 1, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       // requestAnimationFrame(() => loop());
-    }
+    };
     loop();
 
-    const mouseLocation: WebGLUniformLocation = gl.getUniformLocation(
+    const location: WebGLUniformLocation = gl.getUniformLocation(
       program,
       MOUSE_VECTOR_NAME
     );
     canvas.onmousemove = function(e): void {
       const mousePosition = getRelativeMousePosition(e);
-      gl.uniform2fv(mouseLocation, new Float32Array(mousePosition));
+      gl.uniform2fv(location, new Float32Array(mousePosition));
       // render next frame on mouse move
       requestAnimationFrame(() => loop());
     };
@@ -148,7 +163,7 @@ class Image3D {
     const onDeviceMotion = (alpha: number, beta: number, gamma: number) => {
       const RATIO = 0.015;
       const devicePosition = [-RATIO * gamma, -RATIO * beta];
-      gl.uniform2fv(mouseLocation, new Float32Array(devicePosition));
+      gl.uniform2fv(location, new Float32Array(devicePosition));
       // render next frame on mouse move
       requestAnimationFrame(() => loop());
     };
@@ -160,7 +175,7 @@ class Image3D {
 }
 
 export interface CustomWindow extends Window {
-  Something: any;
+  ImageManager: any;
 }
 declare let window: CustomWindow;
-window.Something = new Something();
+window.ImageManager = new ImageManager();
