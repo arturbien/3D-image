@@ -5,7 +5,10 @@ module.exports = {
   devtool: "inline-source-map",
   devServer: {
     contentBase: "./public",
-    watchContentBase: true
+    watchContentBase: true,
+    host: "0.0.0.0", //your ip address
+    port: 8080,
+    https: true
   },
   module: {
     rules: [

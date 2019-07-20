@@ -1,9 +1,12 @@
 import { isString, isElement } from "./type_checking";
 import vertexShader from "./shaders/vertex";
-import fragmentShader from "./shaders/fragment";
+import fragmentShader, { MOUSE_VECTOR_NAME } from "./shaders/fragment";
 import { Selector } from "./types";
 
-import getRelativeMousePosition from "./getRelativeMousePosition";
+import {
+  getRelativeMousePosition,
+  DeviceOrientation
+} from "./getRelativeMousePosition";
 class Something {
   processedImages: Array<Image3D>;
   constructor() {
@@ -133,7 +136,7 @@ class Image3D {
 
     const mouseLocation: WebGLUniformLocation = gl.getUniformLocation(
       program,
-      "mouse"
+      MOUSE_VECTOR_NAME
     );
     canvas.onmousemove = function(e): void {
       const mousePosition = getRelativeMousePosition(e);
@@ -141,6 +144,16 @@ class Image3D {
       // render next frame on mouse move
       requestAnimationFrame(() => loop());
     };
+    // TODO interface for alpa,beta,gamma
+    const onDeviceMotion = (alpha: number, beta: number, gamma: number) => {
+      const RATIO = 0.025;
+      const devicePosition = [-RATIO * gamma, -RATIO * beta];
+      gl.uniform2fv(mouseLocation, new Float32Array(devicePosition));
+      // render next frame on mouse move
+      requestAnimationFrame(() => loop());
+    };
+    DeviceOrientation.subscribe(onDeviceMotion);
+
     this.gl = gl;
     return canvas;
   }
