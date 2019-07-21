@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>3D-image</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+
+
+      body {
+        background: #333;
+      }
+
+      .wrapper {
+      }
+       #avo {
+        margin: auto
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div
+        id="avocado"
+        data-src="./assets/avo.jpg"
+        data-depth-src="./assets/avo-depth.jpg"
+      ></div>
+    </div>
+    <script src="https://unpkg.com/3d-image"></script>
+    <script>
+      var avocado = document.querySelector("#avocado");
+      image3D.process(avocado);
+    </script>
+  </body>
+</html>
