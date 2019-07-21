@@ -38,3 +38,5 @@ Finally, add `3D-image` library and run it like so:
 **Disclaimer:** this library is a work-in-progress, so the API will likely change. There will be more options added like:
 * increasing and decreasing 3D effect strength
 * reacting to scroll events for devices not supporting DeviceOrientation API
+
+**Based on the work of [Yuriy Artyukh](https://tympanus.net/codrops/2019/02/20/how-to-create-a-fake-3d-image-effect-with-webgl/) and [Keilyn Nunez](https://codepen.io/keilyn3d/full/KLVxZM).**
