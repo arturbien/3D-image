@@ -1,14 +1,17 @@
-interface Subscriber {
+type ObserverSubscriber = {
   target: HTMLElement;
   onVisible: Function;
   onInvisible: Function;
-}
-
+};
 // ioid = intersection observer id
 const ID_ATTR_NAME = "data-ioid";
-class VisibilityObserver {
+
+/**
+ * - observes subscribed HTMLElements and triggers callbacks when element appears/disappears from the viewport
+ */
+class Observer {
   intersectionObserver: IntersectionObserver;
-  subscribers: { [key: string]: Subscriber };
+  subscribers: { [key: string]: ObserverSubscriber };
   subscribersCount: number;
 
   constructor() {
@@ -19,24 +22,29 @@ class VisibilityObserver {
       rootMargin: <string>"0px 0px 0px 0px",
       threshold: 0
     };
-    const callback = (entries: Array<IntersectionObserverEntry>) => {
+    const callback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         const target = entry.target;
         const id = target.getAttribute(ID_ATTR_NAME);
+        const subscriber = this.subscribers[id];
+
+        if (!subscriber) return;
+
         if (entry.isIntersecting) {
-          this.subscribers[id].onVisible();
+          subscriber.onVisible();
           console.log("VISIBLE!", target);
         } else {
-          this.subscribers[id].onInvisible();
+          subscriber.onInvisible();
           console.log("invisible!", target);
         }
       });
     };
     this.intersectionObserver = new IntersectionObserver(callback, options);
   }
-  subscribe(subscriber: Subscriber): void {
+  subscribe(subscriber: ObserverSubscriber): void {
     const { target, onVisible, onInvisible } = subscriber;
     if (!target) return;
+
     this.subscribersCount++;
     // generating id (key)
     const id = this.subscribersCount.toString();
@@ -49,4 +57,4 @@ class VisibilityObserver {
   unsubscribe(target: HTMLElement): void {}
 }
 
-export default new VisibilityObserver();
+export default new Observer();

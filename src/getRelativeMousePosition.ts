@@ -1,6 +1,8 @@
 // gets mouse position relative to target element in %
 // returns values in range -0.5 to 0.5, so [0, 0] is center
-export function getRelativeMousePosition(e: MouseEvent): [number, number] {
+
+type MousePosition = [number, number];
+export function getRelativeMousePosition(e: MouseEvent): MousePosition {
   const target = <HTMLCanvasElement>e.target;
 
   // how to do destructuring assignment in TS? 😂
@@ -15,36 +17,31 @@ export function getRelativeMousePosition(e: MouseEvent): [number, number] {
   return [pX, pY];
 }
 
-var deviceOrientationData;
-const RATIO = 0.2;
-let initialBeta: any = null;
-let initialGamma: any = null;
-
-function normalize(min: number, max: number, val: number): number {
-  if (val < min) {
-    return min;
-  } else if (val > max) {
-    return max;
-  }
-  return val;
-}
-
-class DeviceOrientationManager {
-  initialData: any;
+type DeviceOrientation = {
   alpha: number;
   beta: number;
   gamma: number;
-  subscribers: Array<Function>;
+};
+
+class DeviceOrientationManager {
+  initialData: DeviceOrientation | null;
+  data: DeviceOrientation;
+  subscribers: Function[];
 
   constructor() {
     this.subscribers = [];
-
+    this.initialData = null;
+    this.data = {
+      alpha: 0,
+      beta: 0,
+      gamma: 0
+    };
     window.addEventListener(
       "deviceorientation",
       e => {
         this.updateOrientationData(e);
         this.subscribers.forEach(subscriber => {
-          subscriber(this.alpha, this.beta, this.gamma);
+          subscriber(this.data.alpha, this.data.beta, this.data.gamma);
         });
       },
       false
@@ -61,9 +58,9 @@ class DeviceOrientationManager {
         gamma: e.gamma
       };
     }
-    this.alpha = e.alpha - this.initialData.alpha;
-    this.gamma = (-e.gamma + this.initialData.gamma) * -1;
-    this.beta = (e.beta - this.initialData.beta) * -1;
+    this.data.alpha = e.alpha - this.initialData.alpha;
+    this.data.gamma = (-e.gamma + this.initialData.gamma) * -1;
+    this.data.beta = (e.beta - this.initialData.beta) * -1;
   }
 }
 export const DeviceOrientation = new DeviceOrientationManager();
