@@ -1,8 +1,22 @@
 {
   "name": "image-3d",
-  "version": "0.0.1",
-  "description": "",
-  "main": "dist/image-3d.js",
+  "version": "0.1.0",
+  "authors": [
+    "Artur Bień"
+  ],
+  "description": "Small, dependency-free library for creating 3D image effect on your website (like seen on Facebook)",
+  "keywords": [
+    "3Dimage",
+    "3Dphoto",
+    "3D",
+    "image",
+    "photo"
+  ],
+  "repository": "git@github.com:arturbien/image-3d.git",
+  "main": "./dist/image-3d.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack",
