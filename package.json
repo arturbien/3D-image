@@ -1,5 +1,5 @@
 {
-  "name": "image-3d",
+  "name": "3d-image",
   "version": "0.1.0",
   "authors": [
     "Artur Bień"
@@ -12,8 +12,8 @@
     "image",
     "photo"
   ],
-  "repository": "git@github.com:arturbien/image-3d.git",
-  "main": "./dist/image-3d.js",
+  "repository": "git@github.com:arturbien/3D-image.git",
+  "main": "./dist/3d-image.js",
   "publishConfig": {
     "access": "public"
   },

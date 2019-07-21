@@ -23,7 +23,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"]
   },
   output: {
-    filename: "image-3d.js",
+    filename: "3d-image.js",
     path: path.resolve(__dirname, "dist"),
     libraryExport: "default",
     library: "image3D",
