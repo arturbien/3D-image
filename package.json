@@ -10,7 +10,8 @@
     "3Dphoto",
     "3D",
     "image",
-    "photo"
+    "photo",
+    "facebook"
   ],
   "repository": "git@github.com:arturbien/3D-image.git",
   "main": "./dist/3d-image.js",
