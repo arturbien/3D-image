@@ -1,13 +1,13 @@
 {
-  "name": "deep",
-  "version": "0.0.0",
+  "name": "image-3d",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack",
-    "prepublish": "build",
+    "prepare": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
