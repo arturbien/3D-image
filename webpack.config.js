@@ -1,5 +1,5 @@
 const path = require("path");
-
+// https://webpack.js.org/guides/author-libraries/
 module.exports = {
   entry: "./src/index.ts",
   devtool: "inline-source-map",
@@ -23,7 +23,10 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"]
   },
   output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "dist")
+    filename: "image-3d.js",
+    path: path.resolve(__dirname, "dist"),
+    libraryExport: "default",
+    library: "image3D",
+    libraryTarget: "umd"
   }
 };

@@ -10,6 +10,10 @@
         margin: 0;
         padding: 0;
       }
+      div {
+        width: auto;
+        display: inline-block;
+      }
       body {
         background: #333;
         padding: 700px 0;
@@ -47,10 +51,11 @@
         data-depth-src="./assets/mount-depth.jpg"
       ></div>
     </div>
-    <script src="./index.js"></script>
+    <!-- <script src="./../dist/image-3d.js"></script> -->
+    <script src="./image-3d.js"></script>
     <script>
       document.querySelectorAll(".swag").forEach(elem => {
-        ImageManager.apply(elem);
+        image3D.process(elem);
       });
     </script>
   </body>

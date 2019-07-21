@@ -8,7 +8,7 @@ class ImageManager {
     this.images = [];
   }
 
-  apply(selector: Selector): void {
+  process(selector: Selector): void {
     let target: HTMLElement;
 
     if (isString(selector)) {

@@ -2,7 +2,7 @@
   "name": "image-3d",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/image-3d.js",
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack",
