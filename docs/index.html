@@ -4,40 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>3D-image</title>
+    <title>3D-image.js</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:100,200&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/man-surfing_1f3c4-200d-2642-fe0f.png"
+    />
     <style>
       * {
         margin: 0;
         padding: 0;
       }
-
-
-
-      body {
-        background: #333;
-      }
-
+      html,
+      body,
       .wrapper {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family: "Montserrat", sans-serif;
       }
-       #avo {
-        margin: auto
-        display: inline-block;
+      #mount {
+        width: 100%;
+        height: 100vh;
+      }
+      #mount canvas {
+        display: block !important;
+        object-fit: cover !important;
+      }
+      nav {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: linear-gradient(black, transparent);
+        padding: 20px 20px 45px;
+        pointer-events: none;
+      }
+      .heading {
+        pointer-events: auto;
+
+        color: #ddd;
+        font-size: 2rem;
+        font-weight: 100;
+        text-decoration: none;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+      .github {
+        pointer-events: auto;
+        position: fixed;
+        right: 0;
+        top: 0;
+      }
+      .github img {
+        height: 3.5rem;
+        padding-top: 12px;
+        padding-right: 12px;
+        width: auto;
       }
     </style>
   </head>
 
   <body>
     <div class="wrapper">
+      <nav>
+        <a class="heading" href="https://github.com/arturbien/3D-image"
+          >3D-image.js</a
+        >
+        <a class="github" href="https://github.com/arturbien/3D-image">
+          <img src="./assets/github.jpg" alt="Github logo" />
+        </a>
+      </nav>
       <div
-        id="avocado"
-        data-src="./assets/avo.jpg"
-        data-depth-src="./assets/avo-depth.jpg"
+        id="mount"
+        data-src="./assets/mount.jpg"
+        data-depth-src="./assets/mount-depth.jpg"
       ></div>
     </div>
     <script src="https://unpkg.com/3d-image"></script>
     <script>
-      var avocado = document.querySelector("#avocado");
-      image3D.process(avocado);
+      var mount = document.querySelector("#mount");
+      image3D.process(mount);
     </script>
   </body>
 </html>
