@@ -9,7 +9,7 @@
 
 <p>Small (4.35KB gzipped), dependency-free library for creating 3D image effect on your website ( just like on Facebook! ).</p>
 
-* reacts to mouse move / mobile device movement! 🤳
+* reacts to mouse move / mobile device movement! 🤳 (in iOS Safari "motion & orientation access" has to be enabled in settings)
 * based on WebGL
 
 ## How to use 
