@@ -3,7 +3,6 @@ type ObserverSubscriber = {
   onVisible: Function;
   onInvisible: Function;
 };
-// ioid = intersection observer id
 const ID_ATTR_NAME = "data-ioid";
 
 /**
@@ -18,8 +17,8 @@ class Observer {
     this.subscribers = {};
     this.subscribersCount = 0;
     const options = {
-      root: <any>null,
-      rootMargin: <string>"0px 0px 0px 0px",
+      root: null,
+      rootMargin: "0px 0px 0px 0px",
       threshold: 0
     };
     const callback = (entries: IntersectionObserverEntry[]) => {
@@ -41,6 +40,11 @@ class Observer {
     };
     this.intersectionObserver = new IntersectionObserver(callback, options);
   }
+  getSubscriberId(target: HTMLElement): string | undefined {
+    return Object.keys(this.subscribers).find(
+      id => this.subscribers[id].target === target
+    );
+  }
   subscribe(subscriber: ObserverSubscriber): void {
     const { target, onVisible, onInvisible } = subscriber;
     if (!target) return;
@@ -50,11 +54,17 @@ class Observer {
     const id = this.subscribersCount.toString();
     // assigning id to target element
     target.setAttribute(ID_ATTR_NAME, id);
-    // keep reference to that object
+    // keep reference to subscriber
     this.subscribers[id] = subscriber;
     this.intersectionObserver.observe(target);
   }
-  unsubscribe(target: HTMLElement): void {}
+  unsubscribe(target: HTMLElement): void {
+    const id = this.getSubscriberId(target);
+    if (id) {
+      this.intersectionObserver.unobserve(target);
+      delete this.subscribers[id];
+    }
+  }
 }
 
 export default new Observer();

@@ -1,11 +1,9 @@
-import observer from "./Observer";
+import observer from "./eventHandlers/observer";
 import vertexShader from "./shaders/vertex";
 import fragmentShader, { MOUSE_VECTOR_NAME } from "./shaders/fragment";
 
-import {
-  getRelativeMousePosition,
-  DeviceOrientation
-} from "./getRelativeMousePosition";
+import DeviceOrientation from "./eventHandlers/DeviceOrientation";
+import getRelativeMousePosition from "./eventHandlers/MousePosition";
 
 class Image3D {
   target: HTMLElement;
