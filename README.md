@@ -1,5 +1,4 @@
 # 🏄 3D-image 
-
 <p>
   <a href="https://www.npmjs.com/package/3d-image"><img src="https://flat.badgen.net/npm/dt/3d-image" alt="NPM"></a>
   <a href="https://www.npmjs.com/package/3d-image"><img src="https://flat.badgen.net/npm/v/3d-image" alt="3d-image version"></a>
@@ -7,28 +6,34 @@
   
 </p>
 
+![car](https://user-images.githubusercontent.com/28541613/61730278-57f78c80-ad79-11e9-826e-71198a75025c.gif)
+
+
+
 <p>Small (4.35KB gzipped), dependency-free library for creating 3D image effect on your website ( just like on Facebook! ).</p>
 
 * reacts to mouse move / mobile device movement! 🤳 (in iOS Safari ["motion & orientation access"](https://www.youtube.com/watch?time_continue=30&v=ulsqCFMCajY) has to be enabled)
-* based on WebGL
+* based on WebGL shaders
+* uses IntersectionObserver to animate only the images that are currently in the viewport
 
 ## How to use 
 First, you need 2 images: original image, and [depth image](https://www.youtube.com/watch?v=eeU5mUASnVI):
 
-![coke](https://user-images.githubusercontent.com/28541613/61594285-5ea3c980-abea-11e9-97f5-59bda1da9d27.jpg)
+![car1](https://user-images.githubusercontent.com/28541613/61730337-73fb2e00-ad79-11e9-8242-fdd093e39f28.jpg)
+
 
 Then, prepare image slot with `data-src` and `data-depth-src` attributes containing paths to those images:
 
 ```html
-<div id="coke" data-src="path to original image" data-depth-src="path to depth image"></div>
+<div id="car" data-src="path to original image" data-depth-src="path to depth image"></div>
 ```
 
 Finally, add `3D-image` library and run it like so:
 ```html
 <script src="https://unpkg.com/3d-image"></script>
 <script>
-    var coke = document.getElementById("coke");
-    image3D.process(coke);
+    var car = document.getElementById("car");
+    image3D.process(car);
 </script>
 
 ```
