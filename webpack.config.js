@@ -26,7 +26,7 @@ module.exports = {
     filename: "3d-image.js",
     path: path.resolve(__dirname, "dist"),
     libraryExport: "default",
-    library: "image3D",
+    library: "Image3D",
     libraryTarget: "umd"
   }
 };

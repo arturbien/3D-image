@@ -16,16 +16,19 @@
       }
       body {
         background: #333;
-        padding: 700px 0;
       }
       .wrapper {
         width: 100%;
+      }
+      .swag,
+      canvas {
+        max-width: 100%;
       }
     </style>
   </head>
   <body>
     <div class="wrapper">
-      <div
+      <!-- <div
         class="swag"
         data-src="./assets/coke.jpg"
         data-depth-src="./assets/coke-depth.jpg"
@@ -34,7 +37,7 @@
         class="swag"
         data-src="./assets/avo.jpg"
         data-depth-src="./assets/avo-depth.jpg"
-      ></div>
+      ></div> -->
       <div
         class="swag"
         data-src="./assets/ball.jpg"
@@ -50,19 +53,16 @@
         data-src="./assets/lady.jpg"
         data-depth-src="./assets/lady-depth.jpg"
       ></div>
-      <div
-        class="swag"
-        data-src="./assets/mount.jpg"
-        data-depth-src="./assets/mount-depth.jpg"
-      ></div>
+      <div class="selectorTest" data-src="./assets/mount.jpg"></div>
     </div>
     <!-- <script src="./../dist/3d-image.js"></script> -->
     <!-- <script src="https://unpkg.com/3d-image"></script> -->
     <script src="./3d-image.js"></script>
     <script>
       document.querySelectorAll(".swag").forEach(elem => {
-        image3D.process(elem);
+        new Image3D(elem);
       });
+      new Image3D(".selectorTest");
     </script>
   </body>
 </html>

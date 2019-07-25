@@ -1,11 +1,11 @@
-type DeviceOrientation = {
+export type DeviceOrientation = {
   alpha: number;
   beta: number;
   gamma: number;
 };
 
 class DeviceOrientationManager {
-  initialData: DeviceOrientation | null;
+  initialData: DeviceOrientation;
   data: DeviceOrientation;
   subscribers: Function[];
 
@@ -22,7 +22,7 @@ class DeviceOrientationManager {
       e => {
         this.updateOrientationData(e);
         this.subscribers.forEach(subscriber => {
-          subscriber(this.data.alpha, this.data.beta, this.data.gamma);
+          subscriber(this.data);
         });
       },
       false

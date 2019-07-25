@@ -1,5 +1,3 @@
-import ImageManager from "./ImageManager";
+import Image from "./Image";
 
-const image3D = new ImageManager();
-
-export { image3D as default };
+export { Image as default };
