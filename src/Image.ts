@@ -49,6 +49,7 @@ class Image3D {
 
   async loadImage(src: string): Promise<HTMLImageElement> {
     const img: HTMLImageElement = new Image();
+    img.crossOrigin = "anonymous";
     img.src = src;
     await new Promise(r => (img.onload = r));
     return img;
